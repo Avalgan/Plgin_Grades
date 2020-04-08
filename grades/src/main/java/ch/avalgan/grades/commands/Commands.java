@@ -6,11 +6,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import ch.avalgan.grades.grade.PluginGrades;
+import ch.avalgan.grades.utils.SQLConnection;
+
 public class Commands implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player player = (Player) sender;
+		SQLConnection sql = PluginGrades.getInstance().sql;
 		if (label.equalsIgnoreCase("gd")) {
 			if (args.length != 2) {
 				sender.sendMessage("Mauvaise utilisation,/gd <Grade> <Player>");
@@ -22,6 +26,11 @@ public class Commands implements CommandExecutor {
 						if (args[0].equalsIgnoreCase("militaire")) {
 							Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
 									"manuadd " + target.getName() + " militaire");
+							if (!sql.getGrades(target).equalsIgnoreCase("militaire")) {
+								target.sendMessage("Vous avez été unranked!");
+							}
+							sql.deleteReport(target);
+							sql.createGrade(target, "militaire");
 						}
 						if (args[0].equalsIgnoreCase("soldat")) {
 							Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
