@@ -1,0 +1,7 @@
+name: AvalGrade
+version: 0.0.1
+author: 3rty1ne
+main: main.java.ch.avalgan.grades.grade.PluginGrades
+commands: 
+  gd:
+    description: donner/changer de grade
